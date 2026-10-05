@@ -6,7 +6,7 @@ function Home() {
   const skillList = ["JavaScript", "React", "Node.js", "MongoDB", "Python"];
 
   return (
-    <div>
+    <div className="home-page">
       <About />
       <Skills skillList={skillList} />
       <MyProjects />

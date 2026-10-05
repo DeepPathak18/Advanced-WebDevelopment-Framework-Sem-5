@@ -1,8 +1,10 @@
-function Header({ name, themeColor = "#2563eb" }) {
+function Header({ name }) {
   return (
-    <header style={{ backgroundColor: themeColor, color: "#fff", padding: "1.5rem" }}>
-      <h1>{name}</h1>
-      <p>Computer Science & Engineering Student</p>
+    <header className="site-header">
+      <div className="header-content">
+        <h1>{name}</h1>
+        <p>Computer Science &amp; Engineering Student</p>
+      </div>
     </header>
   );
 }

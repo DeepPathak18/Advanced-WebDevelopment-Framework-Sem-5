@@ -1,8 +1,8 @@
 function Skills({ skillList }) {
   return (
-    <section style={{ padding: "1.5rem" }}>
+    <section>
       <h2>Skills</h2>
-      <ul>
+      <ul className="skills-list">
         {skillList.map((s) => (
           <li key={s}>{s}</li>
         ))}

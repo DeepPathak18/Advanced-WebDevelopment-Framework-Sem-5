@@ -1,6 +1,6 @@
 function RepoList({ data }) {
   return (
-    <ul>
+    <ul className="repo-list">
       {data.map((repo) => (
         <li key={repo.id}>
           <a href={repo.html_url} target="_blank" rel="noreferrer">

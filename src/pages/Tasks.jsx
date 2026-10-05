@@ -119,17 +119,17 @@ function Tasks() {
   if (error) return <ErrorMessage message={error} onRetry={reloadTasks} />;
 
   return (
-    <section style={{ padding: "1.5rem" }}>
+    <section className="page-section">
       <h2>Tasks</h2>
 
-      <form onSubmit={handleCreate} style={{ marginBottom: "1rem" }}>
+      <form className="task-form" onSubmit={handleCreate}>
         <input
           type="text"
           placeholder="New task title..."
           value={newTitle}
           onChange={(event) => setNewTitle(event.target.value)}
           disabled={busyAction !== null}
-          style={{ padding: "0.5rem", marginRight: "0.5rem" }}
+          className="task-input"
         />
         <button type="submit" disabled={busyAction !== null || !newTitle.trim()}>
           {busyAction === "create" ? "Saving..." : "Add Task"}
@@ -144,17 +144,16 @@ function Tasks() {
         />
       )}
 
-      <ul>
+      <ul className="task-list">
         {tasks.map((task) => {
           const updating = busyAction === `update-${task._id}`;
           const deleting = busyAction === `delete-${task._id}`;
 
           return (
-            <li key={task._id} style={{ marginBottom: "0.5rem" }}>
+            <li key={task._id}>
               <label
-                style={{
-                  textDecoration: task.completed ? "line-through" : "none",
-                }}
+                className="task-label"
+                style={{ textDecoration: task.completed ? "line-through" : "none" }}
               >
                 <input
                   type="checkbox"
@@ -165,6 +164,7 @@ function Tasks() {
                 {task.title}
               </label>{" "}
               <button
+                className="delete-button"
                 type="button"
                 disabled={busyAction !== null}
                 onClick={() => handleDelete(task._id)}

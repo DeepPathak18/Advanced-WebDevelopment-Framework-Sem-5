@@ -59,14 +59,14 @@ function Projects() {
   );
 
   return (
-    <section style={{ padding: "1.5rem" }}>
+    <section className="page-section">
       <h2>GitHub Repositories</h2>
       <input
         type="text"
         placeholder="Search repos..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{ padding: "0.5rem", marginBottom: "1rem" }}
+        className="repo-search"
       />
       <RepoList data={filteredRepos} />
     </section>

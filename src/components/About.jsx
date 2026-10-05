@@ -1,6 +1,6 @@
 function About() {
   return (
-    <section style={{ padding: "1.5rem" }}>
+    <section className="about-section">
       <h2>About Me</h2>
       <p>
         I'm a CSE student based in Ahmedabad, passionate about AI, agents,

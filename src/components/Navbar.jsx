@@ -7,13 +7,6 @@ function NavBar() {
     document.documentElement.classList.contains("dark")
   );
 
-  const linkStyle = (path) => ({
-    marginRight: "1rem",
-    fontWeight: location.pathname === path ? "bold" : "normal",
-    color: location.pathname === path ? "#2563eb" : "var(--text-color)",
-    textDecoration: "none",
-  });
-
   const toggleTheme = () => {
     const nextIsDark = !isDark;
     document.documentElement.classList.toggle("dark", nextIsDark);
@@ -21,13 +14,13 @@ function NavBar() {
   };
 
   return (
-    <nav className="site-nav" style={{ padding: "1rem", borderBottom: "1px solid var(--border-color)" }}>
-      <Link to="/" style={linkStyle("/")}>Home</Link>
-      <Link to="/projects" style={linkStyle("/projects")}>Projects</Link>
-      <Link to="/github" style={linkStyle("/github")}>GitHub Repos</Link>
-      <Link to="/tasks" style={linkStyle("/tasks")}>Tasks</Link>
-      <Link to="/contact" style={linkStyle("/contact")}>Contact</Link>
-      <button type="button" onClick={toggleTheme}>
+    <nav className="site-nav" aria-label="Main navigation">
+      <Link to="/" className={`nav-link${location.pathname === "/" ? " active" : ""}`}>Home</Link>
+      <Link to="/projects" className={`nav-link${location.pathname === "/projects" ? " active" : ""}`}>Projects</Link>
+      <Link to="/github" className={`nav-link${location.pathname === "/github" ? " active" : ""}`}>GitHub Repos</Link>
+      <Link to="/tasks" className={`nav-link${location.pathname === "/tasks" ? " active" : ""}`}>Tasks</Link>
+      <Link to="/contact" className={`nav-link${location.pathname === "/contact" ? " active" : ""}`}>Contact</Link>
+      <button className="theme-toggle" type="button" onClick={toggleTheme}>
         Switch to {isDark ? "light" : "dark"} mode
       </button>
     </nav>

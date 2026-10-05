@@ -15,11 +15,11 @@ const projects = [
 
 function MyProjects() {
   return (
-    <section style={{ padding: "1.5rem" }}>
+    <section>
       <h2>My Projects</h2>
-      <ul>
+      <ul className="project-list">
         {projects.map((project) => (
-          <li key={project.title} style={{ marginBottom: "1rem" }}>
+          <li key={project.title}>
             <h3>{project.title}</h3>
             <p>{project.description}</p>
           </li>

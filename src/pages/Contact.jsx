@@ -5,8 +5,9 @@ function Contact() {
   const [showHelp, setShowHelp] = useState(false);
 
   return (
-    <section style={{ padding: "1.5rem" }}>
+    <section className="page-section">
       <h2>Contact</h2>
+      <div className="contact-controls">
       <button
         type="button"
         aria-expanded={showHelp}
@@ -18,16 +19,16 @@ function Contact() {
         <p role="tooltip">Enter a message below to see a live preview.</p>
       )}
       <label htmlFor="message">Your message:</label>
-      <br />
       <input
         id="message"
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        style={{ width: "300px", padding: "0.5rem", marginTop: "0.5rem" }}
+        className="contact-input"
       />
       <p>Character count: {message.length}</p>
-      <p>Live preview: {message}</p>
+      <p className="contact-preview">Live preview: {message}</p>
+      </div>
     </section>
   );
 }

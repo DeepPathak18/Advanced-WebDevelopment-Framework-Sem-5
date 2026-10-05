@@ -10,17 +10,19 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <div>
-      <Header name="Your Name" themeColor="#2563eb" />
+    <div className="app-shell">
+      <Header name="Deep Pathak" />
       <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Tasks />} />
-        <Route path="/github" element={<Projects />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Tasks />} />
+          <Route path="/github" element={<Projects />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   );
