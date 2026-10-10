@@ -5,8 +5,52 @@ Express and MongoDB task manager API.
 
 ## Requirements
 
-- Node.js 18 or newer
+- Node.js 20.19+ (20.x) or 22.12+ (Vite 8 requirement)
 - A running MongoDB deployment (local or hosted)
+
+## Run with Docker
+
+Prerequisites: Docker Desktop (or Docker Engine) with the Docker Compose v2
+plugin.
+
+From the project root, create `.env` from the example:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Replace the placeholder `JWT_SECRET` with a private random value. Keep `.env`
+private and do not commit it. Compose will stop with a clear error if
+`JWT_SECRET` is missing.
+
+```sh
+docker compose up --build
+```
+
+Open the frontend at `http://localhost:5173`; the API is available at
+`http://localhost:5000`. The frontend build embeds that host URL, because the
+browser runs on your computer and cannot resolve Docker's `backend` service
+name.
+
+MongoDB is reachable by the backend as `mongodb:27017` on the private Compose
+network and is not published to a host port by default. To connect MongoDB
+Compass, temporarily add this to the `mongodb` service in `docker-compose.yml`:
+
+```yaml
+ports:
+  - "127.0.0.1:27017:27017"
+```
+
+Stop the stack with `docker compose down`. This keeps the named MongoDB data
+volume so your data is available the next time you start the stack. To remove
+the volume and permanently delete that database data, use
+`docker compose down -v`.
+
+| Problem | What to check |
+|---|---|
+| Port 5173 or 5000 is already in use | Stop the other process or change the corresponding host-side port before starting Compose again. |
+| Backend cannot reach MongoDB | Check that the `mongodb` service is healthy and that `MONGO_URI` uses `mongodb://mongodb:27017/taskdb`, not `localhost`. |
+| Changes do not appear after editing | Rebuild the images with `docker compose up --build`. |
 
 ## Run the frontend
 
