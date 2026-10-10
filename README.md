@@ -28,28 +28,54 @@ cd server
 npm install
 ```
 
-Copy `server/.env.example` to `server/.env`, replace `MONGO_URI` with your
-MongoDB connection string, then start the API:
+Copy `.env.example` to `.env`, replace `MONGO_URI` with your
+MongoDB connection string, and set `JWT_SECRET` to a private random value.
+Generate one with:
+
+```sh
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Keep the generated value in your ignored `server/.env`; do not commit it. Then
+start the API:
 
 ```sh
 npm run dev
 ```
 
-The API listens on port `5000` by default. The server reports a connection
-error and does not start listening if MongoDB is unavailable or misconfigured.
+The API listens on port `5000` by default. The server will not start if
+`MONGO_URI` or `JWT_SECRET` is missing, or if MongoDB is unavailable.
 Never commit `server/.env`.
 
 ## Routes
 
-- `/` — Home: About, Skills, and three hardcoded portfolio projects
-- `/projects` — Tasks loaded from the backend
-- `/github` — GitHub Repos explorer
-- `/tasks` — Tasks loaded from the backend (same page as `/projects`)
-- `/contact` — Controlled message input, live preview, and character count
+- `/` — Public student-portfolio landing page with Login and Register links
+- `/home` — Personalized home page after login
+- `/portfolio` — Protected About, Skills, and project page
+- `/projects` — Protected task manager
+- `/github` — Protected GitHub Repos explorer
+- `/tasks` — Protected task manager (same page as `/projects`)
+- `/login` and `/register` — Public authentication pages
+- `/contact` — Protected controlled message input, live preview, and character count
 - Any unknown URL — Custom 404 page with a link to Home
+
+Route pages for `/projects`, `/github`, `/tasks`, `/contact`, `/login`, and
+`/register` are loaded lazily, so their JavaScript chunks are fetched when the
+route is first visited.
 
 The navigation bar includes a dark/light mode toggle. The Contact page includes
 a Help toggle.
+
+## Performance
+
+The Practical 8 before/after build sizes and browser measurement placeholders
+are recorded in [docs/performance.md](docs/performance.md).
+
+## Caching
+
+Practical 9 adds in-memory caching for task reads, write invalidation, and
+cache statistics. See [docs/caching.md](docs/caching.md) for the design and
+the Postman measurement tables.
 
 ## API used
 

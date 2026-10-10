@@ -1,7 +1,7 @@
-function Spinner() {
+function Spinner({ message = "Loading..." }) {
   return (
     <div style={{ padding: "1.5rem", textAlign: "center" }}>
-      <p>Loading...</p>
+      <p>{message}</p>
     </div>
   );
 }

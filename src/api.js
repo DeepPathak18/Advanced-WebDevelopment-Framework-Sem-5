@@ -1,37 +1,111 @@
 const BASE_URL = 'http://localhost:5000';
+const TOKEN_KEY = 'token';
 
-async function readResponse(response, fallbackMessage) {
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error || fallbackMessage);
+export function getToken() {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+export function saveToken(token) {
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+export function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+async function request(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+
+  if (options.useAuth !== false && token) {
+    headers.Authorization = `Bearer ${token}`;
   }
+
+  if (options.body && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  let response;
+  try {
+    response = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers,
+    });
+  } catch {
+    throw new Error(
+      "Cannot reach the API server. Start it from the server folder with `npm run dev`."
+    );
+  }
+
+  let data = {};
+  try {
+    data = await response.json();
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok) {
+    if (options.useAuth !== false && response.status === 401) {
+      clearToken();
+      if (window.location.pathname !== '/login') {
+        window.location.assign('/login?message=session-expired');
+      }
+    }
+
+    const error = new Error(data.error || 'Request failed');
+    error.status = response.status;
+    throw error;
+  }
+
   return data;
 }
 
 export async function getTasks() {
-  const res = await fetch(`${BASE_URL}/tasks`);
-  return readResponse(res, 'Failed to fetch tasks');
+  return request('/tasks');
 }
 
 export async function createTask(task) {
-  const res = await fetch(`${BASE_URL}/tasks`, {
+  return request('/tasks', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(task),
   });
-  return readResponse(res, 'Failed to create task');
 }
 
 export async function updateTask(id, updates) {
-  const res = await fetch(`${BASE_URL}/tasks/${id}`, {
+  return request(`/tasks/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates),
   });
-  return readResponse(res, 'Failed to update task');
 }
 
 export async function deleteTask(id) {
-  const res = await fetch(`${BASE_URL}/tasks/${id}`, { method: 'DELETE' });
-  return readResponse(res, 'Failed to delete task');
+  return request(`/tasks/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function register(email, password) {
+  return request('/register', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+    useAuth: false,
+  });
+}
+
+export async function login(email, password) {
+  const data = await request('/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+    useAuth: false,
+  });
+
+  if (data.token) {
+    saveToken(data.token);
+  }
+
+  return data;
+}
+
+export async function getMe() {
+  return request('/me');
 }

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import Spinner from "../components/Spinner";
 import ErrorMessage from "../components/Errormsg";
-import RepoList from "../components/RepoList";
+
+const RepoList = lazy(() => import("../components/RepoList"));
 
 const GITHUB_USERNAME = "DeepPathak18";
 
@@ -68,7 +70,9 @@ function Projects() {
         onChange={(e) => setSearch(e.target.value)}
         className="repo-search"
       />
-      <RepoList data={filteredRepos} />
+      <Suspense fallback={<p className="inline-page-loader" role="status">Loading repositories...</p>}>
+        <RepoList data={filteredRepos} />
+      </Suspense>
     </section>
   );
 }
